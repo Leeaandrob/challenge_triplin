@@ -1,0 +1,384 @@
+{% extends 'base.html'%}
+{% load staticfiles %}
+{% block content %}
+<section class="l-container" id="m-destination" style="margin-bottom:7em;">
+    <div class="l-grid--gapSm l-gridA">
+        <section class="l-grid_colXs l-gridA_section">
+            <div class="l-grid--gapSm">
+
+                {% if destination.has_picture %}
+                <!-- pictures -->
+                <div class="l-grid_colXs-12">
+                    <div class="l-grid--gapNull m-sliderA" data-pictures="{{ destination.get_pictures }}">
+                        <figure class="m-sliderA_bulletsBox s-activeItem">
+                            <img src="{{ destination.get_picture }}" alt="" class="m-sliderA_bulletsBox_item" />
+                            <figcaption class="m-sliderA_content">
+                                <h3 class="m-sliderA_content_title">{{ destination.name }} <span class="m-sliderA_content_subTitle">{{ destination.parent.name }}</span></h3>
+                            </figcaption>
+                        </figure>
+                        {% for picture in destination.get_pictures %}
+                        <figure class="m-sliderA_bulletsBox">
+                            <img src="{{ picture }}" alt="" class="m-sliderA_bulletsBox_item" />
+                            <figcaption class="m-sliderA_content">
+                                <h3 class="m-sliderA_content_title">{{ destination.name }} <span class="m-sliderA_content_subTitle">{{ destination.parent.name }}</span></h3>
+                            </figcaption>
+                        </figure>
+                        {% endfor %}
+                    </div>
+                </div>
+                <!-- end/pictures -->
+                {% endif %}
+
+                <div class="l-grid_colXs-12">
+                    <div class="m-boxC">
+                        <div class="l-grid--gapSm">
+                            <div class="l-grid_colXs-12 l-grid_colSm-8">
+                                <div class="">
+                                    <p class="m-paragraph--sm">Parabéns{% if request.user.is_authenticated %} <strong>{{ request.user.name }}</strong> {% else %} Visitante! {% endif %} Você acaba de descobrir que o lugar ideal para sua viagem é {{ destination.name }}.</p>
+                                    <p class="m-paragraph--sm">5000 dos nossos usuários recomendam esse lugar!</p>
+                                    <p class="m-paragraph--sm">Você com certeza vai querer dar uma olhada no {% for activity in destination.get_activities %}
+                                        <a href="#" data-interaction="activities" data-modalRoteId="{{ destination.path }}" data-destinypk="{{ destination.location_id }}" data-activitypk="{{ activity.pk }}"><strong>{{ activity.name }}</strong></a>{% endfor %}. Para comer, experimente o{% for restaurant in destination.get_restaurants %}
+                                        <a href="#" data-interaction="restaurants" data-modalRoteId="{{ destination.path }}" data-destinypk="{{ destination.location_id }}" data-restaurantpk="{{ restaurant.pk }}"><strong>{{ restaurant.name }}</strong></a>{% endfor %}.</p>
+                                    <p class="m-paragraph--sm">Não se esqueça de aproveitar bastante! Boa viagem!</p>
+                                </div>
+                            </div>
+                            <div class="l-grid_colXs-12 l-grid_colSm-4">
+                                <div class="">
+                                    <p class="m-paragraph--lg s-margin--bottomSm">Temperatura média</p>
+                                    <ul class="m-listA">
+                                        {% for data in destination.weather %}
+                                            <li class="m-listA_item">
+                                                <span class="m-listA_item_infoA">{{ data.0 }}</span>
+                                                <span class="m-listA_item_climate">
+                                                    <span class="m-listA_item_tempbar" data-temperature="{{ data.1 }}"></span>
+                                                </span>
+                                                <span class="m-listA_item_infoB">{{ data.1 }}º C</span>
+                                            </li>
+                                        {% endfor %}
+                                        <!-- <li class="m-listA_item"> -->
+                                        <!--     <span class="m-listA_item_infoA">Abril</span> -->
+                                        <!--     <span class="m-listA_item_climate--spring">&nbsp;</span> -->
+                                        <!--     <span class="m-listA_item_infoB">21º C</span> -->
+                                        <!-- </li> -->
+                                        <!-- <li class="m-listA_item"> -->
+                                        <!--     <span class="m-listA_item_infoA">Maio</span> -->
+                                        <!--     <span class="m-listA_item_climate--summer">&nbsp;</span> -->
+                                        <!--     <span class="m-listA_item_infoB">24º C</span> -->
+                                        <!-- </li> -->
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="l-grid_colXs-12 l-grid_colSm-6">
+                    <div class="m-boxLocation--featured" style="min-height: 0;">
+                        <div class="l-grid--gapSm">
+                            <div class="l-grid_colXs-12">
+                                <div class="s-width--full">
+                                    <p class="m-paragraph--xlg">O melhor de <strong id="m-City" data-destination="{{ destination.name }}">{{ destination.name }}</strong></p>
+                                </div>
+                            </div>
+                            <div class="l-grid_colXs-12">
+                                <div class="m-boxD s-margin--bottomSm">
+                                    <figure class="m-boxD_wrapImg--typeB">
+                                        <img alt="" class="m-boxD_wrapImg_img" src="{% static 'img/boxes/activities.png' %}">
+                                    </figure>
+                                    <div class="m-boxD_content">
+                                        <p class="m-paragraph--sm"><a class="m-boxLocation_info_link" data-filter="list" data-interaction="activities" data-destinypk="{{ destination.location_id }}" href="#">Atividades</a></p>
+                                        <p class="m-paragraph--sm">{% for at in destination.get_activities %} {{ at.name }}, {% endfor %}</p>
+                                    </div>
+                                </div>
+                            </div>
+                                <!--
+                                <div class="l-grid_colXs-12 l-grid_colSm-6">
+                                    <div class="m-boxD s-margin--bottomSm">
+                                        <figure class="m-boxD_wrapImg--typeB">
+                                            <img alt="" class="m-boxD_wrapImg_img" src="{% static 'img/boxes/otemanu.jpg' %}">
+                                        </figure>
+                                        <div class="m-boxD_content">
+                                            <p class="m-paragraph--sm"><a class="m-boxLocation_info_link" data-filter="list" data-interaction="hotels" data-destinypk="{{ destination.location_id }}" href="#">Hospedagem</a></p>
+                                            <p class="m-paragraph--sm">{% for at in destination.get_hotels %} {{ at.name }}, {% endfor %}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                -->
+                                <div class="l-grid_colXs-12">
+                                    <div class="m-boxD s-margin--bottomSm">
+                                        <figure class="m-boxD_wrapImg--typeB">
+                                            <img alt="" class="m-boxD_wrapImg_img" src="{% static 'img/boxes/restaurants.png' %}">
+                                        </figure>
+                                        <div class="m-boxD_content">
+                                            <p class="m-paragraph--sm"><a class="m-boxLocation_info_link" data-filter="list" data-interaction="restaurants" data-destinypk="{{ destination.location_id }}" href="#">Restaurantes</a></p>
+                                            <p class="m-paragraph--sm">{% for at in destination.get_restaurants %} {{ at.name }}, {% endfor %}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="l-grid_colXs-12 l-grid_colSm-6">
+                        <div class="m-boxC--questionBox" style="min-height: 0;">
+                            <p class="m-paragraph--lg">Pergunte para quem sabe</p>
+                            <p class="m-paragraph--xsm">Digite aqui a sua pergunta para alguém que mora ou já esteve em paris responder.</p>
+                            <form action="{% url 'homesite:destination_question' destination.pk%}" class="m-formA" id="m-formQuestion" novalidate>
+                                {% csrf_token %}
+                                <input class="m-input--whiteBox s-width--full s-margin--bottomXs" id="m-question" name="m-question" type="text" value=""> <button class="m-buttonLightA s-width--full" id="m-sendQuestion">Enviar pergunta</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </section>
+
+<div class="m-overlay" id="m-modalDetails">
+    <div class="m-modalB">
+        <div class="m-modalB_header">
+                    <span class="m-modalB_close" id="m-closeModal" role="button"><svg class="m-modalB_close_icon">
+                            <use xlink:href="#iconClose" xmlns:xlink="http://www.w3.org/1999/xlink"></use></svg></span>
+            <form action="." class="m-form s-width--full" novalidate>
+                <div class="l-grid--gapSm s-margin--bottomMd">
+                    <div class="l-grid_colXs-12 l-grid_colSm-6">
+                        <div class="m-form_box">
+                            <label class="m-label" for="m-searchModal">Nome do local ou estabelecimento</label> <input class="m-input s-width--full" id="m-searchModal" name="m-searchModal" type="search">
+                        </div>
+                    </div>
+                    <div class="l-grid_colXs-12 l-grid_colSm-6 l-grid_colMd-4">
+                        <div class="m-form_box">
+                            <label class="m-label" for="">Tribo</label> <select class="m-select s-width--full" id="m-tribeModal" name="">
+                            <option disabled value="" selected>
+                                Selecione uma tribo
+                            </option>
+                            <option value="">
+                                Romântico
+                            </option>
+                            <option value="">
+                                Familia
+                            </option>
+                            <option value="">
+                                Amigos
+                            </option>
+                            <option value="">
+                                Mochileiros
+                            </option>
+                            <option value="">
+                                Bem Estar
+                            </option>
+                            <option value="">
+                                Arte e Design
+                            </option>
+                            <option value="">
+                                Aventura
+                            </option>
+                            <option value="">
+                                Compras
+                            </option>
+                            <option value="">
+                                Cultura Local
+                            </option>
+                            <option value="">
+                                Gastronomia
+                            </option>
+                            <option value="">
+                                Local Histórico
+                            </option>
+                            <option value="">
+                                Vida Noturna
+                            </option>
+                        </select>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="m-modalB_header_boxInfo l-grid--gapNull">
+                <div class="m-modalB_header_boxInfo_boxA">
+                    <h2 class="m-modalB_header_title s-color--lightGreen">Resultado de pesquisa</h2>
+                </div><!--<div class="m-modalB_header_boxInfo_boxB">-->
+            </div>
+        </div>
+
+        <div class="m-modalB_content">
+            <div class="l-grid--gapSm" id="m-modalDestinationContent">
+                <!--<div class="l-grid_colXs-12 l-grid_colSm-6">-->
+                    <!--<div class="m-boxE">-->
+                        <!--<figure class="m-boxE_wrapFigure">-->
+                            <!--<img alt="" class="m-boxE_wrapFigure_img" src="{% static 'img/boxes/laduree01.jpg' %}">-->
+                        <!--</figure>-->
+                        <!--<div class="m-boxE_content">-->
+                            <!--<a class="m-boxE_content_title" href="#">-->
+                                <!--<h4 class="m-boxE_content_title_text">Título</h4>-->
+                            <!--</a>-->
+                            <!--<ul class="m-listB&#45;&#45;4">-->
+                                <!--<li class="m-listB_item">-->
+                                    <!--<svg class="m-listB_item_icon">-->
+                                        <!--<use xlink:href="#iconStar" xmlns:xlink="http://www.w3.org/1999/xlink"></use></svg>-->
+                                <!--</li>-->
+                                <!--<li class="m-listB_item">-->
+                                    <!--<svg class="m-listB_item_icon">-->
+                                        <!--<use xlink:href="#iconStar" xmlns:xlink="http://www.w3.org/1999/xlink"></use></svg>-->
+                                <!--</li>-->
+                                <!--<li class="m-listB_item">-->
+                                    <!--<svg class="m-listB_item_icon">-->
+                                        <!--<use xlink:href="#iconStar" xmlns:xlink="http://www.w3.org/1999/xlink"></use></svg>-->
+                                <!--</li>-->
+                                <!--<li class="m-listB_item">-->
+                                    <!--<svg class="m-listB_item_icon">-->
+                                        <!--<use xlink:href="#iconStar" xmlns:xlink="http://www.w3.org/1999/xlink"></use></svg>-->
+                                <!--</li>-->
+                                <!--<li class="m-listB_item">-->
+                                    <!--<svg class="m-listB_item_icon">-->
+                                        <!--<use xlink:href="#iconStar" xmlns:xlink="http://www.w3.org/1999/xlink"></use></svg>-->
+                                <!--</li>-->
+                            <!--</ul>-->
+                            <!--<p class="m-paragraph&#45;&#45;xs"><strong>1.219</strong> Avaliações<br>-->
+                                <!--Preço: <strong>€ 24 - € 38</strong></p>-->
+                        <!--</div>-->
+                        <!--<div class="m-boxE_infoBox">-->
+                            <!--<span class="m-buttonIcon&#45;&#45;doubts s-width&#45;&#45;full">Certificado de excelência</span> <button class="m-buttonA&#45;&#45;xxs s-width&#45;&#45;full">Adicionar ao seu roteiro</button>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="m-overlay" id="m-destinationDetails">
+    <div class="m-modalB">
+        <div class="m-modalB_header">
+        <span class="m-modalB_close" id="m-closeModal" role="button">
+            <svg class="m-modalB_close_icon">
+                <use xlink:href="#iconClose" xmlns:xlink="http://www.w3.org/1999/xlink"></use>
+            </svg>
+        </span>
+
+            <h2 class="m-modalB_header_title" id="m-titleInfo"></h2>
+
+            <!--<span class="m-buttonIcon&#45;&#45;doubts">Certificado de excelência</span>-->
+
+            <div class="m-modalB_header_boxInfo l-grid--gapNull">
+                <div class="m-modalB_header_boxInfo_boxA">
+                    <ul class="m-listB--Md" id="m-listRatingInfo">
+                        <li class="m-listB_item">
+                            <svg class="m-listB_item_icon">
+                                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#iconStar"></use>
+                            </svg>
+                        </li>
+                        <li class="m-listB_item">
+                            <svg class="m-listB_item_icon">
+                                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#iconStar"></use>
+                            </svg>
+                        </li>
+                        <li class="m-listB_item">
+                            <svg class="m-listB_item_icon">
+                                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#iconStar"></use>
+                            </svg>
+                        </li>
+                        <li class="m-listB_item">
+                            <svg class="m-listB_item_icon">
+                                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#iconStar"></use>
+                            </svg>
+                        </li>
+                        <li class="m-listB_item">
+                            <svg class="m-listB_item_icon">
+                                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#iconStar"></use>
+                            </svg>
+                        </li>
+                    </ul>
+
+                    <p class="m-paragraph--sm" id="m-ratingText"></p>
+                </div>
+
+                <!--
+                <div class="m-modalB_header_boxInfo_boxB">
+                    <button id="" class="m-buttonB--remove">Remover do Roteiro</button>
+                    <button id="" class="m-buttonB">Trocar por outra atividade</button>
+                </div>
+                -->
+            </div>
+        </div>
+
+        <div class="m-modalB_content">
+            <div class="l-grid--gapSm">
+                <div class="l-grid_colXs-12 l-grid_colSm-6">
+                    <div class="">
+                        <figure class="m-boxFigureA">
+                            <img src="" alt="" id="m-imageInfo" class="m-boxFigureA_img" />
+                        </figure>
+
+                        <p class="m-paragraph--xlg">Resenhas</p>
+
+                        <div class="s-margin--bottomSm" id="m-descriptionInfo">
+
+                            <p class="m-paragraph--xsm s-italic">O lugar é muito charmoso e agradável! Fomos na loja da Champs Elisses e na de Madeleine e pra quem gosta de macarons é o lugar perfeito! Acredito que seja o melhor que comi em Paris! Vale a pena conferir! Recomendo!</p>
+
+                            <p class="m-paragraph--xsm s-underline">- Marcia0209, 22 de novembro de 2015</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="l-grid_colXs-12 l-grid_colSm-6">
+                    <div class="">
+                        <!--
+                        <p class="m-paragraph--xlg">Indicado para as tribos</p>
+
+                        <div class="s-margin--bottomSm">
+                            <div class="m-boxQuantifyA" data-percent="75">
+                                <span class="m-boxQuantifyA_text">75%</span>
+                                <div class="slice">
+                                    <div class="m-boxQuantifyA_bar"></div>
+                                    <div class="fill"></div>
+                                </div>
+                            </div>
+
+                            <div class="m-boxQuantifyA" data-percent="63">
+                                <span class="m-boxQuantifyA_text">63%</span>
+                                <div class="slice">
+                                    <div class="m-boxQuantifyA_bar"></div>
+                                    <div class="fill"></div>
+                                </div>
+                            </div>
+
+                            <div class="m-boxQuantifyA" data-percent="53">
+                                <span class="m-boxQuantifyA_text">53%</span>
+                                <div class="slice">
+                                    <div class="m-boxQuantifyA_bar"></div>
+                                    <div class="fill"></div>
+                                </div>
+                            </div>
+
+                            <div class="m-boxQuantifyA" data-percent="50">
+                                <span class="m-boxQuantifyA_text">50%</span>
+                                <div class="slice">
+                                    <div class="m-boxQuantifyA_bar"></div>
+                                    <div class="fill"></div>
+                                </div>
+                            </div>
+                        </div>
+                        -->
+
+                        <div class="">
+                            <p class="m-paragraph--xlg s-margin--bottomSm">Detalhes</p>
+
+                            <p class="m-paragraph--xsm">
+                                Categoria: <strong id="m-categoryInfo"></strong>
+                            </p>
+                            <p class="m-paragraph--xsm">
+                                Endereço: <strong id="m-adressInfo"></strong>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="l-footerA">
+  <div class="l-container s-margin--topSm">
+      <button type="submit" class="m-buttonA--lg" id=""><a href="{% url 'homesite:travel_itinerary' %}?m_dateInit={{params.date_init}}&m_dateEnd={{params.date_end}}&m_destination={{ params.destination }}">Veja o seu melhor roteiro!</a></button>
+  </div>
+</footer>
+
+{% endblock %}

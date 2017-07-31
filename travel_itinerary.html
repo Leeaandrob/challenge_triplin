@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="l-container">
+    <section class="l-grid--gapNull l-grid--betweenXs l-grid--middleXs s-margin--bottomSm">
+        <div class="l-grid_colXs-12 l-grid_colSm-5">
+            <p class="m-paragraph--xlg s-margin--bottomSm">Roteiro</p>
+        </div>
+
+        <div class="l-grid_colXs-12 l-grid_colSm-7">
+            <div class="l-grid--gapSm l-grid--betweenXs l-grid--middleXs">
+                <div class="l-grid_colXs-12 l-grid_colSm-4">
+                    <div class="">
+                        <p class="m-paragraph--sm s-margin--bottomXs">Período de viagem:</p>
+                    </div>
+                </div>
+
+                <div class="l-grid_colXs-12 l-grid_colSm-8">
+                    <form class="l-grid--gapNull l-grid--centerXs l-grid--middleXs l-gridHeaderA" action="">
+                        <div class="l-gridHeaderA_inputBox">
+                            <div class="s-width--full">
+                                <input type="text" id="m-dateStart" data-picker="true" class="m-input s-width--full" autocomplete="off" value="{{ params.date_init}}" disabled />
+                            </div>
+                        </div>
+
+                        <div class="l-gridHeaderA_text">
+                            <p class="m-paragraph--sm s-width--full">a</p>
+                        </div>
+
+                        <div class="l-gridHeaderA_inputBox">
+                            <div class="s-width--full">
+                                <input type="text" id="m-dateEnd" data-picker="true" class="m-input s-width--full" autocomplete="off" value="{{ params.date_end }}" disabled />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="m-boxCalendarA">
+        <header class="m-boxCalendarA_header">
+            <div class="m-boxCalendarA_header_box">
+                <h2 class="m-boxCalendarA_header_box_title"><strong>{{ destination.0.name }}</strong></h2>
+            </div>
+
+            <form action="" class="m-boxCalendarA_header_formBox m-form">
+                <!--
+                <button id="" class="m-buttonB--addDestiny"> + Adicionar destino</button>
+                <button id="" class="m-buttonB">+ Adicionar evento</button>
+                -->
+
+                <div class="m-sliderB" style="float:right;">
+                    <button class="m-sliderB_button--left" id="">
+                        <svg class="m-sliderB_button_icon">
+                            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#iconArrowBottom"></use>
+                        </svg>
+                    </button>
+
+                    <div class="m-sliderB_dateInfo" id="">{{ date_init }}-{{ date_end }} {{ month }} {{ year }}</div>
+
+                    <button class="m-sliderB_button--right" id="">
+                        <svg class="m-sliderB_button_icon">
+                            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#iconArrowBottom"></use>
+                        </svg>
+                    </button>
+                </div>
+            </form>
+        </header>
+
+        <div class="m-boxCalendarA_body">
+            {% for object in data %}
+            <div class="m-boxCalendarA_body_dateBox">
+                <div class="m-boxCalendarA_body_dateBox_header">
+                    <!-- <div class="m-boxCalendarA_body_dateBox_header_date--featured"> -->
+                    <div class="m-boxCalendarA_body_dateBox_header_date">
+                        <span class="m-boxCalendarA_body_dateBox_header_date_number">{{ object.0.0.day }}</span>
+                        <span class="m-boxCalendarA_body_dateBox_header_date_text">{{ object.0.1 }}</span>
+                    </div>
+                </div>
+
+                <div class="m-boxCalendarA_body_dateBox_body">
+                    <ul class="m-listD">
+                        {% for activity in object.1 %}
+                        <li class="m-listD_item">
+                            <div class="m-listD_item_dateInfo">
+                            </div>
+                            <div class="m-listD_item_content">
+                                <h4 class="m-listD_item_title">Atividade</h4>
+                                <p class="m-paragraph--xs">
+                                    <a href="javascript:;" class="m-listD_item_title_link">{{ activity.name }}</a>
+                                </p>
+                            </div><!-- m-listD_item_content -->
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div><!-- m-boxCalendarA_body_dateBox_body-->
+            </div><!-- m-boxCalendarA_body_dateBox -->
+            {% endfor %}
+
+        <!-- <footer class="m-boxCalendarA_footer"> -->
+        <!--     Não deixe de verificar previamente os horários das atividades. -->
+        <!-- </footer> -->
+
+    </div><!-- "m-boxCalendarA_body -->
+
+<!--   <div class="m-boxMapA"> -->
+<!--     <header class="m-boxMapA_header"> -->
+<!--       <div class="m-boxMapA_header_box"> -->
+<!--         <h2 class="m-boxMapA_header_box_title">Suas Atividades em Paris</h2> -->
+<!--       </div> -->
+
+<!--       <div class="m-boxMapA_header_formBox"> -->
+<!--         <input type="text" value="23/03/2015" class="m-input" autocomplete="off" /> -->
+<!--       </div> -->
+<!--     </header> -->
+
+<!--     <div class="m-boxMapA_body" id="m-mapEdition"></div> -->
+<!--   </div> -->
+<!-- </div> -->
+
+
+<!-- <footer class="l-footerA"> -->
+<!--   <div class="l-container s-margin--topSm"> -->
+<!--     <button type="submit" class="m-buttonA--sm" id="">Imprimir roteiro</button> -->
+<!--     <button type="submit" class="m-buttonA--sm" id="">Salvar roteiro em PDF</button> -->
+<!--     <button type="submit" class="m-buttonA--sm" id="">Enviar roteiro por e-mail</button> -->
+<!--   </div> -->
+<!-- </footer> -->
+
+{% endblock %}
